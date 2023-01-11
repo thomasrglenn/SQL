@@ -1,0 +1,43 @@
+-- Creating the database for a record store
+
+CREATE TABLE record_store (id INTEGER PRIMARY KEY, album_name TEXT, artist_name TEXT, quantity INTEGER, price INTEGER, shelf INTEGER);
+
+-- Inserting the store's inventory into the database table
+
+INSERT INTO record_store VALUES (1, "The End, So Far", "Slipknot", 12, 30, 1);
+INSERT INTO record_store VALUES (2, "All Hope is Gone", "Slipknot", 10, 20, 1);
+INSERT INTO record_store VALUES (3, "Long Term Effects of SUFFERING", "$uicideboy$", 10, 20, 2);
+INSERT INTO record_store VALUES (4, "Sing me a Lullaby, My Sweet Temptation", "$ucideboy$", 8, 30, 2);
+INSERT INTO record_store VALUES (5, "I Want to Die in New Orleans", "$uicideboy$", 12, 18, 2);
+INSERT INTO record_store VALUES (6, "The Greatest Hits", "Johnny Cash", 6, 24, 3);
+INSERT INTO record_store VALUES (7, "The Forever Story", "J.I.D", 11, 30, 2);
+INSERT INTO record_store VALUES (8, "GOODNIGHT LOVELL", "Night Lovell", 4, 22, 2);
+INSERT INTO record_store VALUES (9, "Highwayman", "The Highwaymen", 5, 18, 3);
+INSERT INTO record_store VALUES (10, "Drugs in California", "Transviolet", 6, 15, 4);
+INSERT INTO record_store VALUES (11, "Death of a Bachelor", "Panic! at the Disco", 8, 23, 4);
+INSERT INTO record_store VALUES (12, "x infinity", "Watsky", 5, 18, 2);
+INSERT INTO record_store VALUES (13, "digital druglord", "Blackbear", 8, 22, 4);
+INSERT INTO record_store VALUES (14, "GERM HAS A DEATHWISH", "GERM", 2, 14, 2);
+INSERT INTO record_store VALUES (15, "Melt My Eyez See Your Future", "Denzel Curry", 8, 30, 2);
+INSERT INTO record_store VALUES (16, "IN DIMES WE TRUST", "Mike Dimes", 4, 24, 2);
+INSERT INTO record_store VALUES (17, "everything means nothing", "Blackbear", 5, 28, 4);
+
+-- Displaying the table
+SELECT * FROM record_store;
+
+-- Displaying each album from most expensive to least expensive with how many of each album is in stock
+SELECT album_name, price, quantity FROM record_store ORDER BY price DESC;
+
+-- What is the cost of the inventory of each album?
+SELECT album_name, price*quantity AS total_inventory FROM record_store ORDER BY total_inventory DESC;
+
+-- What is the cost of the inventory on each shelf?
+SELECT shelf, SUM(quantity) AS total_albums, SUM(price) AS total_cost FROM record_store GROUP BY shelf;
+
+-- What is the total inventory in the store?
+SELECT SUM(quantity) AS total_inventory, SUM(price) AS total_cost FROM record_store;
+
+-- Which albums have less than 5 copies in stock, and which shelf are they on?
+SELECT shelf, artist_name, album_name, quantity FROM record_store WHERE quantity < 5 ORDER BY quantity; 
+
+
