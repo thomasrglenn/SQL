@@ -1,0 +1,117 @@
+/* I want to create tables to store data about which artists have the most streams on Spotify. I'm going
+to create a table for the artists and one for the amount of streams. */
+
+CREATE TABLE artists ( 
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+name TEXT, 
+age INTEGER,
+nationality TEXT); 
+    
+INSERT INTO artists (name, age, nationality) VALUES ("Drake", 36, "Canada");
+INSERT INTO artists (name, age, nationality) VALUES ("Bad Bunny", 28, "Puerto Rico");
+INSERT INTO artists (name, age, nationality) VALUES ("Taylor Swift", 33, "US");
+INSERT INTO artists (name, age, nationality) VALUES ("Ed Sheeran", 31, "UK");
+INSERT INTO artists (name, age, nationality) VALUES ("The Weeknd", 32, "Canada"); 
+INSERT INTO artists (name, age, nationality) VALUES ("Justin Bieber", 28, "Canada");
+INSERT INTO artists (name, age, nationality) VALUES ("Ariana Grande", 29, "US");
+INSERT INTO artists (name, age, nationality) VALUES ("Eminem", 50, "US");
+INSERT INTO artists (name, age, nationality) VALUES ("Post Malone", 27, "US");
+INSERT INTO artists (name, age, nationality) VALUES ("J Balvin", 37, "Columbia");
+
+SELECT * FROM artists;
+
+CREATE TABLE streams (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+artist_id INTEGER,
+total_streams INTEGER,
+total_songs INTEGER,
+billion_stream_songs INTEGER); 
+
+INSERT INTO streams (artist_id, total_streams, total_songs, billion_stream_songs) VALUES (1, 55057801921, 282, 7); 
+INSERT INTO streams (artist_id, total_streams, total_songs, billion_stream_songs) VALUES (2, 49602438642, 161, 9);
+INSERT INTO streams (artist_id, total_streams, total_songs, billion_stream_songs) VALUES (3, 40392613598, 349, 2);
+INSERT INTO streams (artist_id, total_streams, total_songs, billion_stream_songs) VALUES (4, 40279942598, 244, 11);
+INSERT INTO streams (artist_id, total_streams, total_songs, billion_stream_songs) VALUES (5, 38275746044, 186, 10);
+INSERT INTO streams (artist_id, total_streams, total_songs, billion_stream_songs) VALUES (6, 34627098680, 226, 8);
+INSERT INTO streams (artist_id, total_streams, total_songs, billion_stream_songs) VALUES (7, 34345423334, 182, 9);
+INSERT INTO streams (artist_id, total_streams, total_songs, billion_stream_songs) VALUES (8, 32999544669, 302, 6);
+INSERT INTO streams (artist_id, total_streams, total_songs, billion_stream_songs) VALUES (9, 31470183402, 99, 9);
+INSERT INTO streams (artist_id, total_streams, total_songs, billion_stream_songs) VALUES (10, 29028095707, 263, 2);
+
+SELECT * FROM streams;
+
+CREATE TABLE songs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    artist_id INTEGER,
+    title TEXT,
+    total_streams INTEGER);
+    
+INSERT INTO songs (artist_id, title, total_streams) VALUES (1, "One Dance", 2069579000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (1, "God's Plan", 1767651000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (1, "In My Feelings", 1140294000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (2, "I Like It", 1417018470);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (2, "Dakiti", 1407258166);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (2, "Mia", 1061139984);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (3, "Blank Space", 980181392);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (3, "I Don't Wanna Live Forever", 1309741039);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (3, "Shake It Off", 877514564);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (4, "Shape of You", 3405382000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (4, "Perfect", 2734131000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (4, "Thinking Out Loud", 1900192000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (5, "Blinding Lights", 3101392933);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (5, "Starboy", 1938399453);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (5, "Save Your Tears", 1908554279);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (6, "Sorry", 1784088170);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (6, "Love Yourself", 1788760791);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (6, "Stay", 1737818415);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (7, "7 Rings", 1566329000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (7, "Thank U, Next", 1398446000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (7, "Side to Side", 1091915000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (8, "Lose Yourself", 1137548000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (8, "Till I Collapse", 1068312000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (8, "Love the Way You Lie", 801500000);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (9, "Rockstar", 2470818822);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (9, "Sunflower", 2361423735);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (9, "Circles", 1744334191);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (10, "LA CANCION", 1259673489);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (10, "No Me Conoce", 1068803388);
+INSERT INTO songs (artist_id, title, total_streams) VALUES (10, "UN PESO", 370470479); 
+
+SELECT * FROM songs;
+
+/*Now, I want to see the artist's name by their total number of streams. I'm simplifying the number of streams for readability. */
+
+SELECT artists.name, ROUND((streams.total_streams/1000000000.000), 4) AS billions_of_streams
+    FROM artists
+    JOIN streams
+    ON artists.id = streams.artist_id;
+
+/* Now, I'm going to see which artist average the most streams per song.*/
+
+SELECT a.name, ROUND((s.total_streams/1000000000.000), 4) AS billions_of_streams, s.total_songs, ROUND((((s.total_streams * 1.0)/s.total_songs) / 1000000), 4) AS avg_million_streams_per_song
+    FROM artists AS a
+    JOIN streams AS s
+    ON a.id = s.artist_id
+    ORDER BY avg_million_streams_per_song DESC; 
+
+/*Which country has the most streams?*/
+    
+SELECT a.nationality, ROUND(SUM(s.total_streams / 1000000000.000), 4) AS billions_of_streams
+    FROM artists AS a
+    JOIN streams AS s
+    ON a.id = s.artist_id
+    GROUP BY a.nationality
+    ORDER BY billions_of_streams DESC;
+    
+/*I want to see a table that shows each artist next to their most streamed song.*/
+
+SELECT a.name AS artist, s.title, ROUND((MAX(s.total_streams) / 1000000000.000), 3) AS billions_of_streams
+    FROM artists as a
+    JOIN songs as s
+    ON a.id = s.artist_id
+    GROUP BY artist
+    ORDER BY billions_of_streams DESC;
+
+    
+    
+    
