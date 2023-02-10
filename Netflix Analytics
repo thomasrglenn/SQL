@@ -45,3 +45,4 @@ AND release_year <=
 FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
 WHERE type = 'Movie')
 ;
+
