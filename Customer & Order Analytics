@@ -48,3 +48,10 @@ ON f.orderID = c.order_id
 WHERE f.quantity > 2
 AND length(orderid) = 6
 AND orderid <> 'Order ID';
+
+#8 List all the products sold in Los Angeles in February, and include how many of each were sold.
+SELECT Product, SUM(quantity) AS total_sold
+FROM FebSales
+WHERE location LIKE '%Los Angeles%'
+GROUP BY Product
+ORDER BY total_sold DESC;
