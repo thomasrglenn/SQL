@@ -1,0 +1,47 @@
+#In this project, I am creating a table from Spotify data I downloaded from Kaggle. 
+#I'm then querying the data to see what questions we can answer with it.
+
+#After downloading the Spotify data, I'm now creating a table to put the data into.
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+song_key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+song_mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL );
+
+#Next, I imported the .csv file of the data into the table.
+
+#What 10 songs would be the best to play at a party that have the best danceability and energy?
+SELECT artist_name,
+track_name,
+(avg(danceability) + avg(energy)) 
+as party_ability
+FROM Spotifydata
+GROUP BY artist_name, track_name
+ORDER BY party_ability DESC
+LIMIT 10;
+
+#What is the average duration of a song in minutes?
+SELECT ROUND((AVG(duration_ms) / 60000.00), 3) 
+as avg_duration_minutes
+FROM Spotifydata;
+
+#Who are the top 10 artists by popularity of all of their songs?
+SELECT artist_name, avg(popularity)
+FROM Spotifydata
+GROUP BY artist_name
+ORDER BY popularity desc
+LIMIT 10;
